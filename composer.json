@@ -1,0 +1,22 @@
+{
+    "name": "piphp/gpio",
+    "description": "A library for accessing the GPIO pins on a Raspberry Pi",
+    "keywords": ["gpio", "pi", "raspberry", "pin", "pins"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andrew Carter",
+            "email": "andrewcarter1992@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PiPHP\\GPIO\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PiPHP\\Test\\GPIO\\": "test/"
+        }
+    }
+}
