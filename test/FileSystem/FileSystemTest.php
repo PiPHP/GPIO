@@ -19,4 +19,12 @@ class FileSystemTest extends \PHPUnit_Framework_TestCase
 
         $stream->close();
     }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testBadFile()
+    {
+        (new FileSystem())->open(__DIR__ . '/this/file/path/does/not/exist', 'r');
+    }
 }
