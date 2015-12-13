@@ -82,7 +82,7 @@ final class Pin implements PinInterface
     public function getValue()
     {
         $valueFile = $this->getPinFile(self::GPIO_PIN_FILE_VALUE);
-        return $this->readFromFile($valueFile);
+        return (int) $this->readFromFile($valueFile);
     }
 
     /**
