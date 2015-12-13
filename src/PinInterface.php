@@ -4,11 +4,11 @@ namespace PiPHP\GPIO;
 
 interface PinInterface
 {
-    const DIRECTION_INPUT  = 'input';
-    const DIRECTION_OUTPUT = 'output';
+    const DIRECTION_IN  = 'in';
+    const DIRECTION_OUT = 'out';
 
-    const VALUE_LOW  = 0;
-    const VALUE_HIGH = 1;
+    const VALUE_LOW  = '0';
+    const VALUE_HIGH = '1';
 
     const EDGE_NONE    = 'none';
     const EDGE_BOTH    = 'both';

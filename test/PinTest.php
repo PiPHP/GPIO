@@ -20,8 +20,8 @@ class PinTest extends \PHPUnit_Framework_TestCase
     public function testDirection()
     {
         $pin = $this->getPin('/sys/class/gpio/gpio' . self::TEST_PIN_NUMBER . '/direction');
-        $pin->setDirection(Pin::DIRECTION_INPUT);
-        $this->assertEquals(Pin::DIRECTION_INPUT, $pin->getDirection());
+        $pin->setDirection(Pin::DIRECTION_IN);
+        $this->assertEquals(Pin::DIRECTION_IN, $pin->getDirection());
     }
 
     public function testValue()
