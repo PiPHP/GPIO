@@ -5,8 +5,10 @@ namespace PiPHP\GPIO\FileSystem;
 interface FileSystemInterface
 {
     /**
-     * @param string $path
-     * @param string $mode
+     * Open a file for reading or writing.
+     * 
+     * @param string $path The path of the file to open
+     * @param string $mode The mode to open the file in (see fopen())
      * 
      * @return StreamInterface
      */
