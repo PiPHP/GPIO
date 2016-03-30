@@ -5,19 +5,19 @@ namespace PiPHP\GPIO;
 interface InterruptWatcherInterface
 {
     /**
-     * Add a pin to the watcher.
+     * Register a callback to fire on pin interrupts. Only one callback can be registered per pin, this method will overwrite.
      *
      * @param PinInterface $pin
      * @param callable     $callback
      */
-    public function addPin(PinInterface $pin, callable $callback);
+    public function register(PinInterface $pin, callable $callback);
 
     /**
-     * Remove a pin from the watcher.
+     * Unregister a pin callback.
      *
      * @param PinInterface $pin
      */
-    public function removePin(PinInterface $pin);
+    public function unregister(PinInterface $pin);
 
     /**
      * Watch for pin interrupts.
