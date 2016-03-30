@@ -11,7 +11,7 @@ A library for low level access to the GPIO pins on a Raspberry Pi
 
 ## Examples
 
-## Setting Output Pins
+### Setting Output Pins
 ```php
 use PiPHP\GPIO\PinInterface;
 use PiPHP\GPIO\PinFactory;
@@ -22,7 +22,7 @@ $pin->setDirection(PinInterface::DIRECTION_OUT);
 $pin->setValue(PinInterface::VALUE_HIGH);
 ```
 
-## Input Pin Interrupts
+### Input Pin Interrupts
 ```php
 use PiPHP\GPIO\InterruptWatcherFactory;
 use PiPHP\GPIO\PinInterface;
