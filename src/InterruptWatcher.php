@@ -2,24 +2,38 @@
 
 namespace PiPHP\GPIO;
 
+use PiPHP\GPIO\FileSystem\FileSystemInterface;
+
 class InterruptWatcher implements InterruptWatcherInterface
 {
-    /**
-     * @var resource[]
-     */
+    private $fileSystem;
     private $streams;
+    private $callbacks;
 
     /**
-     * @var callable[]
+     * Constructor.
+     * 
+     * @param FileSystemInterface $fileSystem An object that provides file system access
      */
-    private $callbacks = array();
+    public function __construct(FileSystemInterface $fileSystem)
+    {
+        $this->fileSystem = $fileSystem;
+        $this->streams = $this->callbacks = [];
+    }
 
     /**
      * {@inheritdoc}
      */
     public function register(PinInterface $pin, callable $callback)
     {
-        $this->callbacks[$pin->getNumber()] = $callback;
+        $pinNumber = $pin->getNumber();
+
+        if (!isset($this->streams[$pinNumber])) {
+            $file = '/sys/class/gpio/gpio' . $pinNumber . '/value';
+            $this->streams[$pinNumber] = $this->fileSystem->open($file, 'r');
+        }
+
+        $this->callbacks[$pinNumber] = $callback;
     }
 
     /**
@@ -27,7 +41,13 @@ class InterruptWatcher implements InterruptWatcherInterface
      */
     public function unregister(PinInterface $pin)
     {
-        unset($this->callbacks[$pin->getNumber()]);
+        $pinNumber = $pin->getNumber();
+
+        if (isset($this->streams[$pinNumber])) {
+            $this->streams[$pinNumber]->close();
+            unset($this->streams[$pinNumber]);
+            unset($this->callbacks[$pinNumber]);
+        }
     }
 
     /**
@@ -35,5 +55,6 @@ class InterruptWatcher implements InterruptWatcherInterface
      */
     public function watch($timeout)
     {
+        
     }
 }
