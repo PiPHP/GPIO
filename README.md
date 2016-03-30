@@ -9,16 +9,37 @@
 
 A library for low level access to the GPIO pins on a Raspberry Pi
 
-## Example
+## Examples
 
+## Setting Output Pins
 ```php
 use PiPHP\GPIO\PinInterface;
 use PiPHP\GPIO\PinFactory;
 
-$pinFactory = new PinFactory();
-$pin = $pinFactory->getPin(18);
-
+$pin = (new PinFactory)->getPin(18);
 $pin->export();
 $pin->setDirection(PinInterface::DIRECTION_OUT);
 $pin->setValue(PinInterface::VALUE_HIGH);
+```
+
+## Input Pin Interrupts
+```php
+use PiPHP\GPIO\InterruptWatcherFactory;
+use PiPHP\GPIO\PinInterface;
+use PiPHP\GPIO\PinFactory;
+
+$pin = (new PinFactory)->getPin(18);
+$pin->export();
+$pin->setEdge(PinInterface::EDGE_BOTH);
+$pin->setDirection(PinInterface::DIRECTION_IN);
+$pin->setValue(PinInterface::VALUE_HIGH);
+
+$interruptWatcher = (new InterruptWatcherFactory)->createWatcher();
+$interruptWatcher->addPin($pin, function (PinInterface $pin, $value) {
+    echo 'Pin ' . $pin->getNumber() . ' changed to: ' . $value . PHP_EOL;
+});
+
+while (1) {
+  $interruptWatcher->watch(5);
+}
 ```
