@@ -7,15 +7,30 @@ final class FileSystem implements FileSystemInterface
     /**
      * {@inheritdoc}
      */
-    public function open($path, $mode)
+    public function getContents($path)
     {
-        $stream = @fopen($path, $mode);
+        $result = @file_get_contents($path);
 
-        if (false === $stream) {
+        if (false === $result) {
             $errorDetails = error_get_last();
             throw new \RuntimeException($errorDetails['message']);
         }
 
-        return new Stream($stream);
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function putContents($path, $buffer, $flags = 0)
+    {
+        $result = @file_put_contents($path, $buffer, $flags);
+
+        if (false === $result) {
+            $errorDetails = error_get_last();
+            throw new \RuntimeException($errorDetails['message']);
+        }
+
+        return $result;
     }
 }
