@@ -50,8 +50,8 @@ $pin->setEdge(PinInterface::EDGE_BOTH);
 // Create an interrupt watcher using the factory class
 $interruptWatcher = (new InterruptWatcherFactory)->createWatcher();
 
-// Add the pin object to the watcher, registering a callback to be triggered on interrupts
-$interruptWatcher->addPin($pin, function (PinInterface $pin, $value) {
+// Register a callback to be triggered on pin interrupts
+$interruptWatcher->register($pin, function (PinInterface $pin, $value) {
     echo 'Pin ' . $pin->getNumber() . ' changed to: ' . $value . PHP_EOL;
 
     // Returning false will make the watcher return false immediately
