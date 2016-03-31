@@ -9,6 +9,7 @@ class InterruptWatcher implements InterruptWatcherInterface
     private $fileSystem;
     private $streams;
     private $callbacks;
+    private $triggers;
 
     /**
      * Constructor.
@@ -18,7 +19,7 @@ class InterruptWatcher implements InterruptWatcherInterface
     public function __construct(FileSystemInterface $fileSystem)
     {
         $this->fileSystem = $fileSystem;
-        $this->streams = $this->callbacks = [];
+        $this->streams = $this->callbacks = $this->triggers = [];
     }
 
     /**
@@ -44,7 +45,8 @@ class InterruptWatcher implements InterruptWatcherInterface
         $pinNumber = $pin->getNumber();
 
         if (isset($this->streams[$pinNumber])) {
-            $this->streams[$pinNumber]->close();
+            fclose($this->streams[$pinNumber]);
+
             unset($this->streams[$pinNumber]);
             unset($this->callbacks[$pinNumber]);
         }
@@ -55,6 +57,32 @@ class InterruptWatcher implements InterruptWatcherInterface
      */
     public function watch($timeout)
     {
-        
+        $seconds = floor($timeout / 1000);
+        $carry = $timeout - ($seconds * 1000);
+        $micro = $carry * 1000;
+
+        $read = $write = [];
+        $except = $this->streams;
+
+        $result = @stream_select($read, $write, $except, $seconds, $micro);
+
+        if (false === $result) {
+            return false;
+        }
+
+        foreach ($except as $pinNumber => $stream) {
+            $value = fread($stream, 1024);
+            rewind($stream);
+
+            $this->triggers[$pinNumber] = $value;
+        }
+
+        foreach ($this->triggers as $pinNumber => $value) {
+            if (false === call_user_func($this->callbacks[$pinNumber], $value)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
