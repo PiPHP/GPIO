@@ -9,8 +9,17 @@ class FileSystemTest extends \PHPUnit_Framework_TestCase
     public function testFileSystem()
     {
         $fileSystem = new FileSystem();
+        $thisFile = file_get_contents(__FILE__);
 
-        $this->assertEquals(file_get_contents(__FILE__), $fileSystem->getContents(__FILE__));
+        // Test open()
+        $stream = $fileSystem->open(__FILE__, 'r');
+        $this->assertEquals($thisFile, stream_get_contents($stream));
+        fclose($stream);
+
+        // Test getContents()
+        $this->assertEquals($thisFile, $fileSystem->getContents(__FILE__));
+
+        // TODO: Test putContents()
     }
 
     /**
