@@ -71,25 +71,34 @@ class PinTest extends \PHPUnit_Framework_TestCase
 class FileSystemMock implements FileSystemInterface
 {
     private $expectedFile;
+    private $contents;
 
     public function __construct($expectedFile)
     {
         $this->expectedFile = $expectedFile;
+        $this->contents = null;
     }
 
     public function getContents($path)
     {
-        if ($this->expectedFile !== $path) {
-            throw new \InvalidArgumentException('Expected ' . $this->expectedFile . ' got ' . $path);
-        }
+        $this->checkExpectedFile($path);
 
-        return;
+        return $this->contents;
     }
 
     public function putContents($path, $buffer, $flags = 0)
     {
-        $this->getContents($path); // proxy
+        $this->checkExpectedFile($path);
 
-        return;
+        $this->contents = $buffer;
+
+        return strlen($buffer);
+    }
+
+    private function checkExpectedFile($path)
+    {
+        if ($this->expectedFile !== $path) {
+            throw new \InvalidArgumentException('Expected ' . $this->expectedFile . ' got ' . $path);
+        }
     }
 }
