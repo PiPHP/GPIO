@@ -19,7 +19,11 @@ class FileSystemTest extends \PHPUnit_Framework_TestCase
         // Test getContents()
         $this->assertEquals($thisFile, $fileSystem->getContents(__FILE__));
 
-        // TODO: Test putContents()
+        // Test putContents()
+        $dummyPath = __DIR__ . '.dummy';
+        $fileSystem->putContents($dummyPath, 'foo');
+        $this->assertEquals('foo', $fileSystem->getContents($dummyPath));
+        unlink($dummyPath);
     }
 
     /**

@@ -11,7 +11,7 @@ final class FileSystem implements FileSystemInterface
     {
         $stream = @fopen($path, $mode);
 
-        $this->exceptionIfFalse($result);
+        $this->exceptionIfFalse($stream);
 
         return $stream;
     }

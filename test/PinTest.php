@@ -77,6 +77,10 @@ class FileSystemMock implements FileSystemInterface
         $this->contents = null;
     }
 
+    public function open($path, $mode)
+    {
+    }
+
     public function getContents($path)
     {
         $this->checkExpectedFile($path);
