@@ -51,8 +51,7 @@ class PinTest extends \PHPUnit_Framework_TestCase
         $pin = (new PinFactory($mockFileSystem))->getPin(self::TEST_PIN_NUMBER);
         $pin->export();
 
-        $exportStream = $mockFileSystem->open($exportFile, 'r');
-        $this->assertEquals(self::TEST_PIN_NUMBER, $exportStream->read(1024));
+        $this->assertEquals(self::TEST_PIN_NUMBER, $mockFileSystem->getContents($exportFile));
     }
 
     public function testUnexport()
@@ -63,8 +62,7 @@ class PinTest extends \PHPUnit_Framework_TestCase
         $pin = (new PinFactory($mockFileSystem))->getPin(self::TEST_PIN_NUMBER);
         $pin->unexport();
 
-        $unexportStream = $mockFileSystem->open($unexportFile, 'r');
-        $this->assertEquals(self::TEST_PIN_NUMBER, $unexportStream->read(1024));
+        $this->assertEquals(self::TEST_PIN_NUMBER, $mockFileSystem->getContents($unexportFile));
     }
 }
 
