@@ -5,6 +5,16 @@ namespace PiPHP\GPIO\FileSystem;
 interface FileSystemInterface
 {
     /**
+     * Open a file.
+     * 
+     * @param string $path The path of the file to open
+     * @param string $mode The mode to open the file in (see fopen())
+     * 
+     * @return resource A stream resource.
+     */
+    public function open($path, $mode);
+
+    /**
      * Read the contents of a file.
      * 
      * @param string $path The path of the file to read
@@ -18,7 +28,7 @@ interface FileSystemInterface
      * 
      * @param string $path   The path of the file to write to
      * @param string $buffer The buffer to write
-     * @param int    $flags  Optional flags, as per the documentation of file_put_contents()
+     * @param int    $flags  Optional flags (see file_put_contents())
      * 
      * @return int The number of bytes written
      */
