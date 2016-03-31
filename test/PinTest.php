@@ -3,7 +3,6 @@
 namespace PiPHP\Test\GPIO;
 
 use PiPHP\GPIO\FileSystem\FileSystemInterface;
-use PiPHP\GPIO\FileSystem\StreamInterface;
 use PiPHP\GPIO\Pin;
 use PiPHP\GPIO\PinFactory;
 
@@ -71,44 +70,26 @@ class PinTest extends \PHPUnit_Framework_TestCase
 
 class FileSystemMock implements FileSystemInterface
 {
-    private $stream;
     private $expectedFile;
 
     public function __construct($expectedFile)
     {
-        $this->stream = null;
         $this->expectedFile = $expectedFile;
     }
 
-    public function open($path, $mode)
+    public function getContents($path)
     {
         if ($this->expectedFile !== $path) {
             throw new \InvalidArgumentException('Expected ' . $this->expectedFile . ' got ' . $path);
         }
 
-        if (null === $this->stream) {
-            $this->stream = new StreamMock();
-        }
-
-        return $this->stream;
-    }
-}
-
-class StreamMock implements StreamInterface
-{
-    private $buffer;
-
-    public function read($length)
-    {
-        return substr($this->buffer, 0, $length);
+        return;
     }
 
-    public function write($buffer)
+    public function putContents($path, $buffer, $flags = 0)
     {
-        $this->buffer = $buffer;
-    }
+        $this->getContents($path); // proxy
 
-    public function close()
-    {
+        return;
     }
 }
