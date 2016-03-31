@@ -11,13 +11,7 @@ class FileSystemTest extends \PHPUnit_Framework_TestCase
     {
         $fileSystem = new FileSystem();
 
-        $stream = $fileSystem->open(__FILE__, 'r');
-        $this->assertInstanceOf(StreamInterface::class, $stream);
-
-        $declaration = $stream->read(5);
-        $this->assertEquals('<?php', $declaration);
-
-        $stream->close();
+        $this->assertEquals(file_get_contents(__FILE__), $fileSystem->getContents(__FILE__));
     }
 
     /**
@@ -25,6 +19,6 @@ class FileSystemTest extends \PHPUnit_Framework_TestCase
      */
     public function testBadFile()
     {
-        (new FileSystem())->open(__DIR__ . '/this/file/path/does/not/exist', 'r');
+        (new FileSystem())->getContents(__DIR__ . '/this/file/path/does/not/exist');
     }
 }
