@@ -7,14 +7,23 @@ final class FileSystem implements FileSystemInterface
     /**
      * {@inheritdoc}
      */
+    public function open($path, $mode)
+    {
+        $stream = @fopen($path, $mode);
+
+        $this->exceptionIfFalse($result);
+
+        return $stream;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getContents($path)
     {
         $result = @file_get_contents($path);
 
-        if (false === $result) {
-            $errorDetails = error_get_last();
-            throw new \RuntimeException($errorDetails['message']);
-        }
+        $this->exceptionIfFalse($result);
 
         return $result;
     }
@@ -26,11 +35,16 @@ final class FileSystem implements FileSystemInterface
     {
         $result = @file_put_contents($path, $buffer, $flags);
 
+        $this->exceptionIfFalse($result);
+
+        return $result;
+    }
+
+    private function exceptionIfFalse($result)
+    {
         if (false === $result) {
             $errorDetails = error_get_last();
             throw new \RuntimeException($errorDetails['message']);
         }
-
-        return $result;
     }
 }
