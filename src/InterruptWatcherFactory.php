@@ -8,15 +8,18 @@ use PiPHP\GPIO\FileSystem\FileSystemInterface;
 final class InterruptWatcherFactory implements InterruptWatcherFactoryInterface
 {
     private $fileSystem;
+    private $streamSelect;
 
     /**
      * Constructor.
      * 
      * @param FileSystemInterface $fileSystem Optional file system object to use
+     * @param callable $streamSelect The stream select implementation to use
      */
-    public function __construct(FileSystemInterface $fileSystem = null)
+    public function __construct(FileSystemInterface $fileSystem = null, $streamSelect = 'stream_select')
     {
         $this->fileSystem = $fileSystem ?: new FileSystem();
+        $this->streamSelect = $streamSelect;
     }
 
     /**
@@ -24,6 +27,6 @@ final class InterruptWatcherFactory implements InterruptWatcherFactoryInterface
      */
     public function createWatcher()
     {
-        return new InterruptWatcher($this->fileSystem);
+        return new InterruptWatcher($this->fileSystem, $this->streamSelect);
     }
 }
