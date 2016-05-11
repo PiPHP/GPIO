@@ -77,7 +77,7 @@ class InterruptWatcher implements InterruptWatcherInterface
             $value = fread($stream, 1024);
             rewind($stream);
 
-            $this->triggers[$pinNumber] = $value;
+            $this->triggers[$pinNumber] = (int) $value;
         }
 
         foreach ($this->triggers as $pinNumber => $value) {
