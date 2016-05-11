@@ -23,14 +23,12 @@ final class FileSystem implements FileSystemInterface
     {
         $stream = $this->open($path, 'r');
 
-        $this->exceptionIfFalse($stream);
-
-        $result = @stream_get_contents($stream);
+        $contents = @stream_get_contents($stream);
         fclose($stream);
 
-        $this->exceptionIfFalse($result);
+        $this->exceptionIfFalse($contents);
 
-        return $result;
+        return $contents;
     }
 
     /**
@@ -40,14 +38,12 @@ final class FileSystem implements FileSystemInterface
     {
         $stream = $this->open($path, 'w');
 
-        $this->exceptionIfFalse($stream);
-
-        $result = @fwrite($stream, $buffer);
+        $bytesWritten = @fwrite($stream, $buffer);
         fclose($stream);
 
-        $this->exceptionIfFalse($result);
+        $this->exceptionIfFalse($bytesWritten);
 
-        return $result;
+        return $bytesWritten;
     }
 
     private function exceptionIfFalse($result)
