@@ -11,11 +11,50 @@ final class FileSystem implements FileSystemInterface
     {
         $stream = @fopen($path, $mode);
 
-        if (false === $stream) {
+        $this->exceptionIfFalse($stream);
+
+        return $stream;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContents($path)
+    {
+        $stream = $this->open($path, 'r');
+
+        $this->exceptionIfFalse($stream);
+
+        $result = @stream_get_contents($stream);
+        fclose($stream);
+
+        $this->exceptionIfFalse($result);
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function putContents($path, $buffer)
+    {
+        $stream = $this->open($path, 'w');
+
+        $this->exceptionIfFalse($stream);
+
+        $result = @fwrite($stream, $buffer);
+        fclose($stream);
+
+        $this->exceptionIfFalse($result);
+
+        return $result;
+    }
+
+    private function exceptionIfFalse($result)
+    {
+        if (false === $result) {
             $errorDetails = error_get_last();
             throw new \RuntimeException($errorDetails['message']);
         }
-
-        return new Stream($stream);
     }
 }

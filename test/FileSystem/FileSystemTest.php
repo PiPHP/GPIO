@@ -3,21 +3,27 @@
 namespace PiPHP\Test\GPIO\FileSystem;
 
 use PiPHP\GPIO\FileSystem\FileSystem;
-use PiPHP\GPIO\FileSystem\StreamInterface;
 
 class FileSystemTest extends \PHPUnit_Framework_TestCase
 {
     public function testFileSystem()
     {
         $fileSystem = new FileSystem();
+        $thisFile = file_get_contents(__FILE__);
 
+        // Test open()
         $stream = $fileSystem->open(__FILE__, 'r');
-        $this->assertInstanceOf(StreamInterface::class, $stream);
+        $this->assertEquals($thisFile, stream_get_contents($stream));
+        fclose($stream);
 
-        $declaration = $stream->read(5);
-        $this->assertEquals('<?php', $declaration);
+        // Test getContents()
+        $this->assertEquals($thisFile, $fileSystem->getContents(__FILE__));
 
-        $stream->close();
+        // Test putContents()
+        $dummyPath = __DIR__ . '.dummy';
+        $fileSystem->putContents($dummyPath, 'foo');
+        $this->assertEquals('foo', $fileSystem->getContents($dummyPath));
+        unlink($dummyPath);
     }
 
     /**
@@ -25,6 +31,6 @@ class FileSystemTest extends \PHPUnit_Framework_TestCase
      */
     public function testBadFile()
     {
-        (new FileSystem())->open(__DIR__ . '/this/file/path/does/not/exist', 'r');
+        (new FileSystem())->getContents(__DIR__ . '/this/file/path/does/not/exist');
     }
 }

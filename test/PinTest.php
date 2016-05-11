@@ -3,7 +3,6 @@
 namespace PiPHP\Test\GPIO;
 
 use PiPHP\GPIO\FileSystem\FileSystemInterface;
-use PiPHP\GPIO\FileSystem\StreamInterface;
 use PiPHP\GPIO\Pin;
 use PiPHP\GPIO\PinFactory;
 
@@ -52,8 +51,7 @@ class PinTest extends \PHPUnit_Framework_TestCase
         $pin = (new PinFactory($mockFileSystem))->getPin(self::TEST_PIN_NUMBER);
         $pin->export();
 
-        $exportStream = $mockFileSystem->open($exportFile, 'r');
-        $this->assertEquals(self::TEST_PIN_NUMBER, $exportStream->read(1024));
+        $this->assertEquals(self::TEST_PIN_NUMBER, $mockFileSystem->getContents($exportFile));
     }
 
     public function testUnexport()
@@ -64,51 +62,45 @@ class PinTest extends \PHPUnit_Framework_TestCase
         $pin = (new PinFactory($mockFileSystem))->getPin(self::TEST_PIN_NUMBER);
         $pin->unexport();
 
-        $unexportStream = $mockFileSystem->open($unexportFile, 'r');
-        $this->assertEquals(self::TEST_PIN_NUMBER, $unexportStream->read(1024));
+        $this->assertEquals(self::TEST_PIN_NUMBER, $mockFileSystem->getContents($unexportFile));
     }
 }
 
 class FileSystemMock implements FileSystemInterface
 {
-    private $stream;
     private $expectedFile;
+    private $contents;
 
     public function __construct($expectedFile)
     {
-        $this->stream = null;
         $this->expectedFile = $expectedFile;
+        $this->contents = null;
     }
 
     public function open($path, $mode)
     {
+    }
+
+    public function getContents($path)
+    {
+        $this->checkExpectedFile($path);
+
+        return $this->contents;
+    }
+
+    public function putContents($path, $buffer, $flags = 0)
+    {
+        $this->checkExpectedFile($path);
+
+        $this->contents = $buffer;
+
+        return strlen($buffer);
+    }
+
+    private function checkExpectedFile($path)
+    {
         if ($this->expectedFile !== $path) {
             throw new \InvalidArgumentException('Expected ' . $this->expectedFile . ' got ' . $path);
         }
-
-        if (null === $this->stream) {
-            $this->stream = new StreamMock();
-        }
-
-        return $this->stream;
-    }
-}
-
-class StreamMock implements StreamInterface
-{
-    private $buffer;
-
-    public function read($length)
-    {
-        return substr($this->buffer, 0, $length);
-    }
-
-    public function write($buffer)
-    {
-        $this->buffer = $buffer;
-    }
-
-    public function close()
-    {
     }
 }
