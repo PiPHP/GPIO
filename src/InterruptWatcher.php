@@ -8,6 +8,7 @@ class InterruptWatcher implements InterruptWatcherInterface
 {
     private $fileSystem;
     private $streams;
+    private $pins;
     private $callbacks;
     private $triggers;
 
@@ -19,7 +20,7 @@ class InterruptWatcher implements InterruptWatcherInterface
     public function __construct(FileSystemInterface $fileSystem)
     {
         $this->fileSystem = $fileSystem;
-        $this->streams = $this->callbacks = $this->triggers = [];
+        $this->streams = $this->pins = $this->callbacks = $this->triggers = [];
     }
 
     /**
@@ -34,6 +35,7 @@ class InterruptWatcher implements InterruptWatcherInterface
             $this->streams[$pinNumber] = $this->fileSystem->open($file, 'r');
         }
 
+        $this->pins[$pinNumber] == $pin;
         $this->callbacks[$pinNumber] = $callback;
     }
 
@@ -49,6 +51,7 @@ class InterruptWatcher implements InterruptWatcherInterface
 
             unset($this->streams[$pinNumber]);
             unset($this->callbacks[$pinNumber]);
+            unset($this->pins[$pinNumber]);
         }
     }
 
@@ -78,7 +81,7 @@ class InterruptWatcher implements InterruptWatcherInterface
         }
 
         foreach ($this->triggers as $pinNumber => $value) {
-            if (false === call_user_func($this->callbacks[$pinNumber], $value)) {
+            if (false === call_user_func($this->callbacks[$pinNumber], $this->pins[$pinNumber], $value)) {
                 return false;
             }
         }
