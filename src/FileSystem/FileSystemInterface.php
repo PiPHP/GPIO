@@ -28,9 +28,8 @@ interface FileSystemInterface
      * 
      * @param string $path   The path of the file to write to
      * @param string $buffer The buffer to write
-     * @param int    $flags  Optional flags (see file_put_contents())
      * 
      * @return int The number of bytes written
      */
-    public function putContents($path, $buffer, $flags = 0);
+    public function putContents($path, $buffer);
 }
