@@ -21,7 +21,12 @@ final class FileSystem implements FileSystemInterface
      */
     public function getContents($path)
     {
-        $result = @file_get_contents($path);
+        $stream = $this->open($path, 'r');
+
+        $this->exceptionIfFalse($stream);
+
+        $result = @stream_get_contents($stream);
+        fclose($stream);
 
         $this->exceptionIfFalse($result);
 
@@ -31,9 +36,14 @@ final class FileSystem implements FileSystemInterface
     /**
      * {@inheritdoc}
      */
-    public function putContents($path, $buffer, $flags = 0)
+    public function putContents($path, $buffer)
     {
-        $result = @file_put_contents($path, $buffer, $flags);
+        $stream = $this->open($path, 'w');
+
+        $this->exceptionIfFalse($stream);
+
+        $result = @fwrite($stream, $buffer);
+        fclose($stream);
 
         $this->exceptionIfFalse($result);
 
