@@ -35,7 +35,7 @@ class InterruptWatcher implements InterruptWatcherInterface
             $this->streams[$pinNumber] = $this->fileSystem->open($file, 'r');
         }
 
-        $this->pins[$pinNumber] == $pin;
+        $this->pins[$pinNumber] = $pin;
         $this->callbacks[$pinNumber] = $callback;
     }
 
