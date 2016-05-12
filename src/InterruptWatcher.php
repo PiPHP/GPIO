@@ -80,7 +80,7 @@ class InterruptWatcher implements InterruptWatcherInterface
         $read = $write = [];
         $except = $this->streams;
 
-        $streamSelect = [$this, $this->streamSelect];
+        $streamSelect = $this->streamSelect;
         $result = @$streamSelect($read, $write, $except, $seconds, $micro);
 
         if (false === $result) {
