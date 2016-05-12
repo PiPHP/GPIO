@@ -7,7 +7,19 @@
 [![License](https://poser.pugx.org/piphp/gpio/license)](https://packagist.org/packages/piphp/gpio)
 [![Total Downloads](https://poser.pugx.org/piphp/gpio/downloads)](https://packagist.org/packages/piphp/gpio)
 
-A library for low level access to the GPIO pins on a Raspberry Pi
+A library for low level access to the GPIO pins on a Raspberry Pi.
+
+By [AndrewCarterUK ![(Twitter)](http://i.imgur.com/wWzX9uB.png)](https://twitter.com/AndrewCarterUK)
+
+## Installing
+
+Using [composer](https://getcomposer.org/):
+
+`composer require piphp/gpio`
+
+Or:
+
+`php composer.phar require piphp/gpio`
 
 ## Examples
 
