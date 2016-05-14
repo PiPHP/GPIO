@@ -13,17 +13,14 @@ A library for low level access to the GPIO pins on a Raspberry Pi
 
 ### Setting Output Pins
 ```php
-use PiPHP\GPIO\PinInterface;
-use PiPHP\GPIO\PinFactory;
+use PiPHP\GPIO\GPIO;
+use PiPHP\GPIO\Pin\PinInterface;
 
-// Retrieve a pin object using the factory class
-$pin = (new PinFactory)->getPin(18);
+// Create a GPIO object
+$gpio = new GPIO();
 
-// Export the pin (so that it is available to use)
-$pin->export();
-
-// Set the pin as an output pin
-$pin->setDirection(PinInterface::DIRECTION_OUT);
+// Retrieve pin 18 and configure it as an output pin
+$pin = $gpio->getOutputPin(18);
 
 // Set the value of the pin high (turn it on)
 $pin->setValue(PinInterface::VALUE_HIGH);
@@ -31,27 +28,23 @@ $pin->setValue(PinInterface::VALUE_HIGH);
 
 ### Input Pin Interrupts
 ```php
-use PiPHP\GPIO\InterruptWatcherFactory;
-use PiPHP\GPIO\PinInterface;
-use PiPHP\GPIO\PinFactory;
+use PiPHP\GPIO\GPIO;
+use PiPHP\GPIO\Pin\InputPinInterface;
 
-// Retrieve a pin object using the factory class
-$pin = (new PinFactory)->getPin(18);
+// Create a GPIO object
+$gpio = new GPIO();
 
-// Export the pin (so that it is available to use)
-$pin->export();
+// Retrieve pin 18 and configure it as an input pin
+$pin = $gpio->getInputPin(18);
 
-// Set the pin as an input pin
-$pin->setDirection(PinInterface::DIRECTION_IN);
+// Configure interrupts for both rising and falling edges
+$pin->setEdge(InputPinInterface::EDGE_BOTH);
 
-// Configure the pin to trigger interrupts on both rising and falling edges
-$pin->setEdge(PinInterface::EDGE_BOTH);
-
-// Create an interrupt watcher using the factory class
-$interruptWatcher = (new InterruptWatcherFactory)->createWatcher();
+// Create an interrupt watcher
+$interruptWatcher = $gpio->createWatcher();
 
 // Register a callback to be triggered on pin interrupts
-$interruptWatcher->register($pin, function (PinInterface $pin, $value) {
+$interruptWatcher->register($pin, function (InputPinInterface $pin, $value) {
     echo 'Pin ' . $pin->getNumber() . ' changed to: ' . $value . PHP_EOL;
 
     // Returning false will make the watcher return false immediately

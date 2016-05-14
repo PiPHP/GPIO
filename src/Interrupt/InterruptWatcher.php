@@ -1,8 +1,9 @@
 <?php
 
-namespace PiPHP\GPIO;
+namespace PiPHP\GPIO\Interrupt;
 
 use PiPHP\GPIO\FileSystem\FileSystemInterface;
+use PiPHP\GPIO\Pin\InputPinInterface;
 
 class InterruptWatcher implements InterruptWatcherInterface
 {
@@ -39,13 +40,14 @@ class InterruptWatcher implements InterruptWatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function register(PinInterface $pin, callable $callback)
+    public function register(InputPinInterface $pin, callable $callback)
     {
         $pinNumber = $pin->getNumber();
 
         if (!isset($this->streams[$pinNumber])) {
             $file = '/sys/class/gpio/gpio' . $pinNumber . '/value';
             $this->streams[$pinNumber] = $this->fileSystem->open($file, 'r');
+            stream_set_blocking($this->streams[$pinNumber], false);
         }
 
         $this->pins[$pinNumber] = $pin;
@@ -55,7 +57,7 @@ class InterruptWatcher implements InterruptWatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function unregister(PinInterface $pin)
+    public function unregister(InputPinInterface $pin)
     {
         $pinNumber = $pin->getNumber();
 
@@ -90,7 +92,7 @@ class InterruptWatcher implements InterruptWatcherInterface
         $triggers = [];
 
         foreach ($except as $pinNumber => $stream) {
-            $value = fread($stream, 1024);
+            $value = fread($stream, 1);
             @rewind($stream);
 
             if ($value !== false) {

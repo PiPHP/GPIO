@@ -1,23 +1,25 @@
 <?php
 
-namespace PiPHP\GPIO;
+namespace PiPHP\GPIO\Interrupt;
+
+use PiPHP\GPIO\Pin\InputPinInterface;
 
 interface InterruptWatcherInterface
 {
     /**
      * Register a callback to fire on pin interrupts. Only one callback can be registered per pin, this method will overwrite.
      *
-     * @param PinInterface $pin
-     * @param callable     $callback
+     * @param InputPinInterface $pin
+     * @param callable $callback
      */
-    public function register(PinInterface $pin, callable $callback);
+    public function register(InputPinInterface $pin, callable $callback);
 
     /**
      * Unregister a pin callback.
      *
-     * @param PinInterface $pin
+     * @param InputPinInterface $pin
      */
-    public function unregister(PinInterface $pin);
+    public function unregister(InputPinInterface $pin);
 
     /**
      * Watch for pin interrupts.
