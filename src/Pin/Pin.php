@@ -1,23 +1,26 @@
 <?php
 
-namespace PiPHP\GPIO;
+namespace PiPHP\GPIO\Pin;
 
 use PiPHP\GPIO\FileSystem\FileSystemInterface;
 
-final class Pin implements PinInterface
+abstract class Pin implements PinInterface
 {
     // Paths
-    const GPIO_PATH   = '/sys/class/gpio/';
+    const GPIO_PATH = '/sys/class/gpio/';
     const GPIO_PREFIX = 'gpio';
 
     // Files
-    const GPIO_FILE_EXPORT   = 'export';
+    const GPIO_FILE_EXPORT = 'export';
     const GPIO_FILE_UNEXPORT = 'unexport';
 
     // Pin files
     const GPIO_PIN_FILE_DIRECTION = 'direction';
-    const GPIO_PIN_FILE_VALUE     = 'value';
-    const GPIO_PIN_FILE_EDGE      = 'edge';
+    const GPIO_PIN_FILE_VALUE = 'value';
+
+    // Directions
+    const DIRECTION_IN = 'in';
+    const DIRECTION_OUT = 'out';
 
     private $fileSystem;
     private $number;
@@ -32,6 +35,8 @@ final class Pin implements PinInterface
     {
         $this->fileSystem = $fileSystem;
         $this->number = $number;
+
+        $this->export();
     }
 
     /**
@@ -61,16 +66,7 @@ final class Pin implements PinInterface
     /**
      * {@inheritdoc}
      */
-    public function getDirection()
-    {
-        $directionFile = $this->getPinFile(self::GPIO_PIN_FILE_DIRECTION);
-        return $this->fileSystem->getContents($directionFile);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDirection($direction)
+    protected function setDirection($direction)
     {
         $directionFile = $this->getPinFile(self::GPIO_PIN_FILE_DIRECTION);
         $this->fileSystem->putContents($directionFile, $direction);
@@ -83,32 +79,6 @@ final class Pin implements PinInterface
     {
         $valueFile = $this->getPinFile(self::GPIO_PIN_FILE_VALUE);
         return (int) $this->fileSystem->getContents($valueFile);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setValue($value)
-    {
-        $valueFile = $this->getPinFile(self::GPIO_PIN_FILE_VALUE);
-        $this->fileSystem->putContents($valueFile, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEdge()
-    {
-        $edgeFile = $this->getPinFile(self::GPIO_PIN_FILE_EDGE);
-        return $this->fileSystem->getContents($edgeFile);
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function setEdge($edge)
-    {
-        $edgeFile = $this->getPinFile(self::GPIO_PIN_FILE_EDGE);
-        $this->fileSystem->putContents($edgeFile, $edge);
     }
 
     /**
@@ -130,7 +100,7 @@ final class Pin implements PinInterface
      * 
      * @return string
      */
-    private function getPinFile($file)
+    protected function getPinFile($file)
     {
         return self::GPIO_PATH . self::GPIO_PREFIX . $this->getNumber() . '/' . $file;
     }
