@@ -9,9 +9,14 @@ class InterruptWatcherTest extends \PHPUnit_Framework_TestCase
 {
     public function testWatcher()
     {
+        // Create stream pairs initialised with a value to read
         $streamPair2 = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
         $streamPair3 = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
 
+        fwrite($streamPair2[1], '0');
+        fwrite($streamPair3[1], '0');
+
+        // Mock the file system with the stream pairs
         $fileSystem = $this
             ->getMockBuilder(FileSystemInterface::class)
             ->setMethods(['open', 'getContents', 'putContents'])
@@ -31,13 +36,15 @@ class InterruptWatcherTest extends \PHPUnit_Framework_TestCase
             return stream_select($except, $write, $dummy);
         };
 
+        // Create the GPIO object using our mock dependencies
         $gpio = new GPIO($fileSystem, $streamSelect);
         $watcher = $gpio->createWatcher();
 
+        // Log variables for the number of interrupts triggered
         $callCount2 = $callCount3 = 0;
 
+        // Register handlers
         $pin2 = $gpio->getInputPin(2);
-        $pin3 = $gpio->getInputPin(3);
 
         $watcher->register($pin2, function ($pin, $value) use (&$callCount2, $pin2) {
             $callCount2++;
@@ -47,6 +54,8 @@ class InterruptWatcherTest extends \PHPUnit_Framework_TestCase
             return true;
         });
 
+        $pin3 = $gpio->getInputPin(3);
+
         $watcher->register($pin3, function ($pin, $value) use (&$callCount3, $pin3) {
             $callCount3++;
             $this->assertSame($pin3, $pin);
@@ -55,6 +64,7 @@ class InterruptWatcherTest extends \PHPUnit_Framework_TestCase
             return true;
         });
 
+        // Trigger interrupts
         fwrite($streamPair2[1], '1');
         $watcher->watch(100);
 
@@ -62,11 +72,13 @@ class InterruptWatcherTest extends \PHPUnit_Framework_TestCase
         fwrite($streamPair3[1], '0');
         $watcher->watch(100);
 
+        // Unregister one of the handlers
         $watcher->unregister($pin2);
 
         @fwrite($streamPair2[1], '0');
         $watcher->watch(100);
 
+        // Check expected number of interrupts
         $this->assertEquals(2, $callCount2);
         $this->assertEquals(3, $callCount3);
 

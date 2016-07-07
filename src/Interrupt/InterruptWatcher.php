@@ -48,6 +48,7 @@ class InterruptWatcher implements InterruptWatcherInterface
             $file = '/sys/class/gpio/gpio' . $pinNumber . '/value';
             $this->streams[$pinNumber] = $this->fileSystem->open($file, 'r');
             stream_set_blocking($this->streams[$pinNumber], false);
+            fread($this->streams[$pinNumber], 1);
         }
 
         $this->pins[$pinNumber] = $pin;
