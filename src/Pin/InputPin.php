@@ -16,9 +16,6 @@ final class InputPin extends Pin implements InputPinInterface
      */
     public function __construct(FileSystemInterface $fileSystem, $number)
     {
-        $this->fileSystem = $fileSystem;
-        $this->number = $number;
-
         parent::__construct($fileSystem, $number);
 
         $this->setDirection(self::DIRECTION_IN);

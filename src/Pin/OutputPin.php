@@ -14,9 +14,6 @@ final class OutputPin extends Pin implements OutputPinInterface
      */
     public function __construct(FileSystemInterface $fileSystem, $number)
     {
-        $this->fileSystem = $fileSystem;
-        $this->number = $number;
-
         parent::__construct($fileSystem, $number);
 
         $this->setDirection(self::DIRECTION_OUT);

@@ -22,8 +22,8 @@ abstract class Pin implements PinInterface
     const DIRECTION_IN = 'in';
     const DIRECTION_OUT = 'out';
 
-    private $fileSystem;
-    private $number;
+    protected $fileSystem;
+    protected $number;
 
     /**
      * Constructor.
