@@ -49,7 +49,7 @@ class InterruptWatcher implements InterruptWatcherInterface
             $this->streams[$pinNumber] = $this->fileSystem->open($file, 'r');
             stream_set_blocking($this->streams[$pinNumber], false);
             fread($this->streams[$pinNumber], 1);
-            @rewind($stream);
+            @rewind($this->streams[$pinNumber]);
         }
 
         $this->pins[$pinNumber] = $pin;
