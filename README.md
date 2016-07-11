@@ -66,3 +66,11 @@ $interruptWatcher->register($pin, function (InputPinInterface $pin, $value) {
 // Watch for interrupts, timeout after 5000ms (5 seconds)
 while ($interruptWatcher->watch(5000));
 ```
+
+## Further Reading
+
+SitePoint published a tutorial about [powering Raspberry Pi projects with PHP](https://www.sitepoint.com/powering-raspberry-pi-projects-with-php/) which used this library and shows a push button example with a wiring diagram.
+
+## More Resources
+
+PiPHP maintains a [resource directory](https://github.com/PiPHP/Resources) for PHP programming on the Raspberry Pi.
