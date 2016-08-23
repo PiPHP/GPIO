@@ -30,4 +30,13 @@ interface PinInterface
      * @return int
      */
     public function getValue();
+
+    /**
+     * Sets active_low
+     * If set to true or 1, it means setValue(HIGH) will result the pin being LOW; also for input, if
+     * getValue()==HIGH it means the pin is in reality LOW, no voltage)
+     *
+     * @param bool|int $activeLow
+     */
+    public function setActiveLow($activeLow);
 }

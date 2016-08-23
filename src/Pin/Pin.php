@@ -17,10 +17,17 @@ abstract class Pin implements PinInterface
     // Pin files
     const GPIO_PIN_FILE_DIRECTION = 'direction';
     const GPIO_PIN_FILE_VALUE = 'value';
+    const GPIO_PIN_FILE_ACTIVE_LOW = 'active_low';
 
     // Directions
     const DIRECTION_IN = 'in';
-    const DIRECTION_OUT = 'out';
+    const DIRECTION_OUT = 'out'; // the default output value is LOW
+    const DIRECTION_OUT_HIGH = 'high'; // direction out and the default value set to HIGH; useful for active_low logic
+    const DIRECTION_OUT_LOW = 'low'; // direction out and the default value set to LOW
+
+    //Active Low values
+    const ACTIVE_LOW_TRUE = 1;
+    const ACTIVE_LOW_FALSE = 0;
 
     protected $fileSystem;
     protected $number;
@@ -69,7 +76,12 @@ abstract class Pin implements PinInterface
     protected function setDirection($direction)
     {
         $directionFile = $this->getPinFile(self::GPIO_PIN_FILE_DIRECTION);
-        $this->fileSystem->putContents($directionFile, $direction);
+        try {
+            $this->fileSystem->putContents($directionFile, $direction);
+        } catch (\RuntimeException $ex) {
+            usleep(100000);
+            $this->fileSystem->putContents($directionFile, $direction);
+        }
     }
 
     /**
@@ -79,6 +91,15 @@ abstract class Pin implements PinInterface
     {
         $valueFile = $this->getPinFile(self::GPIO_PIN_FILE_VALUE);
         return (int) $this->fileSystem->getContents($valueFile);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setActiveLow($activeLow)
+    {
+        $activeLowFile = $this->getPinFile(self::GPIO_PIN_FILE_ACTIVE_LOW);
+        $this->fileSystem->putContents($activeLowFile, $activeLow ? self::ACTIVE_LOW_TRUE : self::ACTIVE_LOW_FALSE);
     }
 
     /**

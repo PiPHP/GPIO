@@ -36,9 +36,9 @@ final class GPIO implements GPIOInterface
     /**
      * {@inheritdoc}
      */
-    public function getOutputPin($number)
+    public function getOutputPin($number, $activeLow = false, $defaultHigh = null)
     {
-        return new OutputPin($this->fileSystem, $number);
+        return new OutputPin($this->fileSystem, $number, $activeLow, $defaultHigh);
     }
 
     /**

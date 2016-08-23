@@ -19,12 +19,15 @@ interface GPIOInterface
 
     /**
      * Get an output pin.
-     * 
-     * @param int $number The pin number
-     * 
-     * @return OutputPinInterface
+     *
+     * @param int  $number The pin number
+     *
+     * @param bool $activeLow
+     * @param null $defaultHigh
+     *
+     * @return \PiPHP\GPIO\Pin\OutputPinInterface
      */
-    public function getOutputPin($number);
+    public function getOutputPin($number, $activeLow = false, $defaultHigh = null);
 
     /**
      * Create an interrupt watcher.
