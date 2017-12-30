@@ -10,7 +10,7 @@ final class InputPin extends Pin implements InputPinInterface
 
     /**
      * Constructor.
-     * 
+     *
      * @param FileSystemInterface $fileSystem An object that provides file system access
      * @param int                 $number     The number of the pin
      */
@@ -27,7 +27,7 @@ final class InputPin extends Pin implements InputPinInterface
     public function getEdge()
     {
         $edgeFile = $this->getPinFile(self::GPIO_PIN_FILE_EDGE);
-        return $this->fileSystem->getContents($edgeFile);
+        return trim($this->fileSystem->getContents($edgeFile));
     }
 
     /**
