@@ -5,6 +5,7 @@ namespace PiPHP\GPIO;
 use PiPHP\GPIO\FileSystem\FileSystem;
 use PiPHP\GPIO\FileSystem\FileSystemInterface;
 use PiPHP\GPIO\Interrupt\InterruptWatcher;
+use PiPHP\GPIO\Pin\Pin;
 use PiPHP\GPIO\Pin\InputPin;
 use PiPHP\GPIO\Pin\OutputPin;
 
@@ -36,9 +37,13 @@ final class GPIO implements GPIOInterface
     /**
      * {@inheritdoc}
      */
-    public function getOutputPin($number)
+    public function getOutputPin($number, $exportDirection = Pin::DIRECTION_OUT)
     {
-        return new OutputPin($this->fileSystem, $number);
+        if ($exportDirection !== Pin::DIRECTION_OUT && $exportDirection !== Pin::DIRECTION_LOW && $exportDirection !== Pin::DIRECTION_HIGH) {
+            throw new \InvalidArgumentException('exportDirection has to be an OUT type (OUT/LOW/HIGH).');
+        }
+
+        return new OutputPin($this->fileSystem, $number, $exportDirection);
     }
 
     /**
