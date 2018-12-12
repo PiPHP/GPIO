@@ -25,7 +25,10 @@ class FileSystemTest extends TestCase
         $dummyPath = __DIR__ . '.dummy';
         $fileSystem->putContents($dummyPath, 'foo');
         $this->assertEquals('foo', $fileSystem->getContents($dummyPath));
+        $this->assertTrue($fileSystem->exists($dummyPath));
+        $this->assertFalse($fileSystem->isDir($dummyPath));
         unlink($dummyPath);
+        $this->assertFalse($fileSystem->exists($dummyPath));
     }
 
     public function testBadFile()

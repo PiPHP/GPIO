@@ -55,4 +55,20 @@ final class FileSystem implements FileSystemInterface
             throw new RuntimeException($errorDetails['message']);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function exists($path)
+    {
+        return file_exists($path);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDir($path)
+    {
+        return is_dir($path);
+    }
 }

@@ -21,4 +21,18 @@ class VFS implements FileSystemInterface
     {
         $this->vfs[$path] = $buffer;
     }
+
+    public function exists($path)
+    {
+        $regex = sprintf('#^%s(\/.+)?$#', preg_quote($path, '#'));
+
+        return !empty(array_filter(array_keys($this->vfs), function ($key) use ($regex) {
+            return preg_match($regex, $key);
+        }));
+    }
+
+    public function isDir($path)
+    {
+        return $this->exists($path) && !array_key_exists($path, $this->vfs);
+    }
 }

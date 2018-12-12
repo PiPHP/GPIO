@@ -30,9 +30,7 @@ final class OutputPin extends Pin implements OutputPinInterface
      */
     public function setValue($value)
     {
-        if ($this->getValue() !== $value) {
-            $valueFile = $this->getPinFile(self::GPIO_PIN_FILE_VALUE);
-            $this->fileSystem->putContents($valueFile, $value);
-        }
+        $valueFile = $this->getPinFile(self::GPIO_PIN_FILE_VALUE);
+        $this->fileSystem->putContents($valueFile, $value);
     }
 }

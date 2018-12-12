@@ -81,7 +81,9 @@ abstract class Pin implements PinInterface
      */
     protected function isExported()
     {
-        return file_exists($directory = $this->getPinDirectory()) && is_dir($directory);
+        $directory = $this->getPinDirectory();
+
+        return $this->fileSystem->exists($directory) && $this->fileSystem->isDir($directory);
     }
 
     /**
@@ -90,6 +92,11 @@ abstract class Pin implements PinInterface
     protected function getDirection()
     {
         $directionFile = $this->getPinFile(self::GPIO_PIN_FILE_DIRECTION);
+
+        if (!$this->fileSystem->exists($directionFile)) {
+            return null;
+        }
+
         return trim($this->fileSystem->getContents($directionFile));
     }
 
