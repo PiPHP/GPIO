@@ -3,6 +3,7 @@
     "description": "A library for accessing the GPIO pins on a Raspberry Pi",
     "keywords": ["gpio", "pi", "raspberry", "pin", "pins"],
     "license": "MIT",
+    "type": "module",
     "authors": [
         {
             "name": "Christian Letourneau",
