@@ -19,5 +19,8 @@
         "psr-4": {
             "PiPHP\\Test\\GPIO\\": "test/"
         }
+    },
+    "require": {
+        "composer/installers": "^1.9"
     }
 }
