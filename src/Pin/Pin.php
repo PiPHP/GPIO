@@ -70,8 +70,16 @@ abstract class Pin implements PinInterface
      */
     protected function setDirection($direction)
     {
+        if( !$this->directionMatches($direction) ){
+            $directionFile = $this->getPinFile(self::GPIO_PIN_FILE_DIRECTION);
+            $this->fileSystem->putContents($directionFile, $direction);
+        }
+    }
+
+    protected function getDirection(): string {
         $directionFile = $this->getPinFile(self::GPIO_PIN_FILE_DIRECTION);
-        $this->fileSystem->putContents($directionFile, $direction);
+
+        return $this->fileSystem->getContents($directionFile);
     }
 
     /**
@@ -119,5 +127,9 @@ abstract class Pin implements PinInterface
 
     private function isExported(): bool {
         return file_exists( self::GPIO_PATH . self::GPIO_PREFIX . $this->getNumber() );
+    }
+
+    private function directionMatches( string $direction ): bool {
+        return $this->getDirection() === $direction;
     }
 }
