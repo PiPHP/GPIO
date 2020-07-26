@@ -130,6 +130,6 @@ abstract class Pin implements PinInterface
     }
 
     private function directionMatches( string $direction ): bool {
-        return $this->getDirection() === $direction;
+        return trim($this->getDirection()) === $direction;
     }
 }
