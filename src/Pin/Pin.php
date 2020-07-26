@@ -27,7 +27,7 @@ abstract class Pin implements PinInterface
 
     /**
      * Constructor.
-     * 
+     *
      * @param FileSystemInterface $fileSystem An object that provides file system access
      * @param int                 $number     The number of the pin
      */
@@ -36,7 +36,9 @@ abstract class Pin implements PinInterface
         $this->fileSystem = $fileSystem;
         $this->number = $number;
 
-        $this->export();
+        if( !$this->isExported() ){
+            $this->export();
+        }
     }
 
     /**
@@ -83,9 +85,9 @@ abstract class Pin implements PinInterface
 
     /**
      * Get the path of the import or export file.
-     * 
+     *
      * @param string $file The type of file (import/export)
-     * 
+     *
      * @return string The file path
      */
     private function getFile($file)
@@ -95,9 +97,9 @@ abstract class Pin implements PinInterface
 
     /**
      * Get the path of a pin access file.
-     * 
+     *
      * @param string $file The type of pin file (edge/value/direction)
-     * 
+     *
      * @return string
      */
     protected function getPinFile($file)
@@ -107,11 +109,15 @@ abstract class Pin implements PinInterface
 
     /**
      * Write the pin number to a file.
-     * 
+     *
      * @param string $file The file to write to
      */
     private function writePinNumberToFile($file)
     {
         $this->fileSystem->putContents($file, $this->getNumber());
+    }
+
+    private function isExported(): bool {
+        return file_exists( self::GPIO_PATH . self::GPIO_PREFIX . $this->getNumber() );
     }
 }
