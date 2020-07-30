@@ -2,10 +2,11 @@
 
 namespace PiPHP\Test\GPIO\Pin;
 
+use PHPUnit\Framework\TestCase;
 use PiPHP\GPIO\GPIO;
 use PiPHP\Test\GPIO\FileSystem\VFS;
 
-class OutputPinTest extends \PHPUnit_Framework_TestCase
+class OutputPinTest extends TestCase
 {
     public function testOutputPin()
     {
@@ -16,7 +17,7 @@ class OutputPinTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('2', $vfs->getContents('/sys/class/gpio/export'));
         $this->assertEquals('out', $vfs->getContents('/sys/class/gpio/gpio2/direction'));
- 
+
         $pin->setValue(1);
 
         $this->assertEquals(1, $vfs->getContents('/sys/class/gpio/gpio2/value'));

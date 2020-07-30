@@ -2,9 +2,10 @@
 
 namespace PiPHP\Test\GPIO\FileSystem;
 
+use PHPUnit\Framework\TestCase;
 use PiPHP\GPIO\FileSystem\FileSystem;
 
-class FileSystemTest extends \PHPUnit_Framework_TestCase
+class FileSystemTest extends TestCase
 {
     public function testFileSystem()
     {
