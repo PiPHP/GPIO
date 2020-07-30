@@ -2,7 +2,7 @@
 
 namespace PiPHP\GPIO;
 
-use PiPHP\GPIO\FileSystem\FileSystem;
+use PiPHP\GPIO\FileSystem\FileSystemFactory;
 use PiPHP\GPIO\FileSystem\FileSystemInterface;
 use PiPHP\GPIO\Interrupt\InterruptWatcher;
 use PiPHP\GPIO\Pin\InputPin;
@@ -15,13 +15,13 @@ final class GPIO implements GPIOInterface
 
     /**
      * Constructor.
-     * 
+     *
      * @param FileSystemInterface $fileSystem Optional file system object to use
      * @param callable $streamSelect Optional sream select callable
      */
     public function __construct(FileSystemInterface $fileSystem = null, callable $streamSelect = null)
     {
-        $this->fileSystem = $fileSystem ?: new FileSystem();
+        $this->fileSystem = $fileSystem ?: FileSystemFactory::getFileSystem();
         $this->streamSelect = $streamSelect ?: 'stream_select';
     }
 
