@@ -11,8 +11,9 @@ interface InterruptWatcherInterface
      *
      * @param InputPinInterface $pin
      * @param callable $callback
+     * @param integer $delay time in ms between callbacks
      */
-    public function register(InputPinInterface $pin, callable $callback);
+    public function register(InputPinInterface $pin, callable $callback, int $delay = 0);
 
     /**
      * Unregister a pin callback.

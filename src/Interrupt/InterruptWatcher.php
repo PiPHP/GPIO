@@ -12,6 +12,8 @@ class InterruptWatcher implements InterruptWatcherInterface
     private $streams;
     private $pins;
     private $callbacks;
+    private $delays;
+    private $lastCallbacks;
 
     /**
      * Constructor.
@@ -40,7 +42,7 @@ class InterruptWatcher implements InterruptWatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function register(InputPinInterface $pin, callable $callback)
+    public function register(InputPinInterface $pin, callable $callback, int $delay = 0)
     {
         $pinNumber = $pin->getNumber();
 
@@ -54,6 +56,8 @@ class InterruptWatcher implements InterruptWatcherInterface
 
         $this->pins[$pinNumber] = $pin;
         $this->callbacks[$pinNumber] = $callback;
+        $this->debounceDelays[$pinNumber] = (float)$delay / 1000;
+        $this->lastCallbackMicrotimes[$pinNumber] = 0;
     }
 
     /**
@@ -68,6 +72,7 @@ class InterruptWatcher implements InterruptWatcherInterface
 
             unset($this->streams[$pinNumber]);
             unset($this->callbacks[$pinNumber]);
+            unset($this->debounceDelays[$pinNumber]);
             unset($this->pins[$pinNumber]);
         }
     }
@@ -80,6 +85,8 @@ class InterruptWatcher implements InterruptWatcherInterface
         $seconds = floor($timeout / 1000);
         $carry = $timeout - ($seconds * 1000);
         $micro = $carry * 1000;
+
+        $microtimeNow = microtime(true);
 
         $read = $write = [];
         $except = $this->streams;
@@ -103,6 +110,16 @@ class InterruptWatcher implements InterruptWatcherInterface
         }
 
         foreach ($triggers as $pinNumber => $value) {
+            if ($this->debounceDelays[$pinNumber] !== 0
+                && $this->lastCallbackMicrotimes[$pinNumber] !== 0 
+                && ($microtimeNow - $this->lastCallbackMicrotimes[$pinNumber] < $this->debounceDelays[$pinNumber])
+            ) {
+
+                return true;
+            }
+
+            $this->lastCallbackMicrotimes[$pinNumber] = $microtimeNow;
+
             if (false === call_user_func($this->callbacks[$pinNumber], $this->pins[$pinNumber], $value)) {
                 return false;
             }
