@@ -2,10 +2,11 @@
 
 namespace PiPHP\Test\GPIO;
 
+use PHPUnit\Framework\TestCase;
 use PiPHP\GPIO\GPIO;
 use PiPHP\GPIO\FileSystem\FileSystemInterface;
 
-class InterruptWatcherTest extends \PHPUnit_Framework_TestCase
+class InterruptWatcherTest extends TestCase
 {
     public function testWatcher()
     {
