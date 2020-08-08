@@ -2,6 +2,8 @@
 
 namespace PiPHP\GPIO\FileSystem;
 
+use RuntimeException;
+
 final class FileSystem implements FileSystemInterface
 {
     /**
@@ -50,7 +52,7 @@ final class FileSystem implements FileSystemInterface
     {
         if (false === $result) {
             $errorDetails = error_get_last();
-            throw new \RuntimeException($errorDetails['message']);
+            throw new RuntimeException($errorDetails['message']);
         }
     }
 }
