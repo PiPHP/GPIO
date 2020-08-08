@@ -4,6 +4,7 @@ jobs:
   run:
     runs-on: ${{ matrix.operating-system }}
     strategy:
+      fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.2', '7.3', '7.4', '8.0']
@@ -14,9 +15,12 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
+
     - uses: actions/checkout@v2
+
     - name: Show php version
       run: php --version
+
     - name: Validate composer.json and composer.lock
       run: composer validate
 
