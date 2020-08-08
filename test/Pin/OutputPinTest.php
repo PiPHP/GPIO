@@ -16,7 +16,7 @@ class OutputPinTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('2', $vfs->getContents('/sys/class/gpio/export'));
         $this->assertEquals('out', $vfs->getContents('/sys/class/gpio/gpio2/direction'));
- 
+
         $pin->setValue(1);
 
         $this->assertEquals(1, $vfs->getContents('/sys/class/gpio/gpio2/value'));

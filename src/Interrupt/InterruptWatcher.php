@@ -15,7 +15,7 @@ class InterruptWatcher implements InterruptWatcherInterface
 
     /**
      * Constructor.
-     * 
+     *
      * @param FileSystemInterface $fileSystem An object that provides file system access
      * @param callable $streamSelect The stream select implementation
      */

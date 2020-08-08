@@ -16,7 +16,7 @@ class InputPinTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('2', $vfs->getContents('/sys/class/gpio/export'));
         $this->assertEquals('in', $vfs->getContents('/sys/class/gpio/gpio2/direction'));
- 
+
         $pin->setEdge('both');
 
         $this->assertEquals('both', $pin->getEdge());
