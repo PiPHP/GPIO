@@ -3,6 +3,7 @@
 namespace PiPHP\Test\GPIO\FileSystem;
 
 use PiPHP\GPIO\FileSystem\FileSystem;
+use RuntimeException;
 
 class FileSystemTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,11 +27,9 @@ class FileSystemTest extends \PHPUnit_Framework_TestCase
         unlink($dummyPath);
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testBadFile()
     {
+        $this->expectException(RuntimeException::class);
         (new FileSystem())->getContents(__DIR__ . '/this/file/path/does/not/exist');
     }
 }
