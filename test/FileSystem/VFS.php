@@ -8,7 +8,9 @@ class VFS implements FileSystemInterface
 {
     private $vfs = [];
 
-    public function open($path, $mode) {}
+    public function open($path, $mode)
+    {
+    }
 
     public function getContents($path)
     {

@@ -15,7 +15,7 @@ final class GPIO implements GPIOInterface
 
     /**
      * Constructor.
-     * 
+     *
      * @param FileSystemInterface $fileSystem Optional file system object to use
      * @param callable $streamSelect Optional sream select callable
      */
