@@ -4,12 +4,12 @@ namespace PiPHP\GPIO\Pin;
 
 interface PinInterface
 {
-    const VALUE_LOW = 0;
-    const VALUE_HIGH = 1;
+    public const VALUE_LOW = 0;
+    public const VALUE_HIGH = 1;
 
     /**
      * Get the pin number.
-     * 
+     *
      * @return int
      */
     public function getNumber();
@@ -26,7 +26,7 @@ interface PinInterface
 
     /**
      * Get the pin value.
-     * 
+     *
      * @return int
      */
     public function getValue();

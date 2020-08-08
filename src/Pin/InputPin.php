@@ -6,11 +6,11 @@ use PiPHP\GPIO\FileSystem\FileSystemInterface;
 
 final class InputPin extends Pin implements InputPinInterface
 {
-    const GPIO_PIN_FILE_EDGE = 'edge';
+    public const GPIO_PIN_FILE_EDGE = 'edge';
 
     /**
      * Constructor.
-     * 
+     *
      * @param FileSystemInterface $fileSystem An object that provides file system access
      * @param int                 $number     The number of the pin
      */
