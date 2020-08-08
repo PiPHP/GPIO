@@ -2,10 +2,11 @@
 
 namespace PiPHP\Test\GPIO\FileSystem;
 
+use PHPUnit\Framework\TestCase;
 use PiPHP\GPIO\FileSystem\FileSystem;
 use RuntimeException;
 
-class FileSystemTest extends \PHPUnit_Framework_TestCase
+class FileSystemTest extends TestCase
 {
     public function testFileSystem()
     {

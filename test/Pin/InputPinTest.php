@@ -2,10 +2,11 @@
 
 namespace PiPHP\Test\GPIO\Pin;
 
+use PHPUnit\Framework\TestCase;
 use PiPHP\GPIO\GPIO;
 use PiPHP\Test\GPIO\FileSystem\VFS;
 
-class InputPinTest extends \PHPUnit_Framework_TestCase
+class InputPinTest extends TestCase
 {
     public function testInputPin()
     {
