@@ -8,7 +8,7 @@ final class OutputPin extends Pin implements OutputPinInterface
 {
     /**
      * Constructor.
-     * 
+     *
      * @param FileSystemInterface $fileSystem An object that provides file system access
      * @param int                 $number     The number of the pin
      */
