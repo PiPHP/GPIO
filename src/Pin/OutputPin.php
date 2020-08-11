@@ -12,11 +12,17 @@ final class OutputPin extends Pin implements OutputPinInterface
      * @param FileSystemInterface $fileSystem An object that provides file system access
      * @param int                 $number     The number of the pin
      */
-    public function __construct(FileSystemInterface $fileSystem, $number)
+    public function __construct(FileSystemInterface $fileSystem, $number, $exportDirection = self::DIRECTION_OUT)
     {
         parent::__construct($fileSystem, $number);
 
-        $this->setDirection(self::DIRECTION_OUT);
+        $direction = self::DIRECTION_OUT;
+
+        if ($this->exported) {
+            $direction = $exportDirection;
+        }
+
+        $this->setDirection($direction);
     }
 
     /**

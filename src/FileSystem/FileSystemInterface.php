@@ -5,6 +5,24 @@ namespace PiPHP\GPIO\FileSystem;
 interface FileSystemInterface
 {
     /**
+     * Checks whether a file or directory exists
+     *
+     * @param string $path Path to the file or directory
+     *
+     * @return bool true if file exists, false otherwise
+     */
+    public function exists($path);
+
+    /**
+     * Tells whether the filename is a directory
+     *
+     * @param string $path Path to the file/directory
+     *
+     * @return bool true if the filename exists and is a directory, false otherwise
+     */
+    public function isDir($path);
+
+    /**
      * Open a file.
      *
      * @param string $path The path of the file to open

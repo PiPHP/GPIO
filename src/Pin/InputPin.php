@@ -27,7 +27,7 @@ final class InputPin extends Pin implements InputPinInterface
     public function getEdge()
     {
         $edgeFile = $this->getPinFile(self::GPIO_PIN_FILE_EDGE);
-        return $this->fileSystem->getContents($edgeFile);
+        return trim($this->fileSystem->getContents($edgeFile));
     }
 
     /**

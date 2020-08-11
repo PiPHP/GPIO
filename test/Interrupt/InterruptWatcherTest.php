@@ -20,7 +20,7 @@ class InterruptWatcherTest extends TestCase
         // Mock the file system with the stream pairs
         $fileSystem = $this
             ->getMockBuilder(FileSystemInterface::class)
-            ->setMethods(['open', 'getContents', 'putContents'])
+            ->setMethods(['open', 'getContents', 'putContents', 'exists', 'isDir'])
             ->getMock();
 
         $map = [
