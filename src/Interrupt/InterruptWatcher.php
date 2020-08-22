@@ -75,7 +75,7 @@ class InterruptWatcher implements InterruptWatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function watch($timeout)
+    public function watch(int $timeout): bool
     {
         $seconds = floor($timeout / 1000);
         $carry = $timeout - ($seconds * 1000);

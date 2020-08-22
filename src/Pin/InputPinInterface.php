@@ -14,12 +14,12 @@ interface InputPinInterface extends PinInterface
      *
      * @return string The pin edge value
      */
-    public function getEdge();
+    public function getEdge(): string;
 
     /**
      * Set the pin edge.
      *
      * @param string $edge The pin edge value to set
      */
-    public function setEdge($edge);
+    public function setEdge(string $edge);
 }

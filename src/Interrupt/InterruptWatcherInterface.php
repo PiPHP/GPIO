@@ -26,5 +26,5 @@ interface InterruptWatcherInterface
      *
      * @param int $timeout The maximum time to watch for in milliseconds.
      */
-    public function watch($timeout);
+    public function watch(int $timeout): bool;
 }

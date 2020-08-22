@@ -35,7 +35,7 @@ abstract class Pin implements PinInterface
      * @param FileSystemInterface $fileSystem An object that provides file system access
      * @param int                 $number     The number of the pin
      */
-    public function __construct(FileSystemInterface $fileSystem, $number)
+    public function __construct(FileSystemInterface $fileSystem, int $number)
     {
         $this->fileSystem = $fileSystem;
         $this->number = $number;
@@ -46,7 +46,7 @@ abstract class Pin implements PinInterface
     /**
      * {@inheritdoc}
      */
-    public function getNumber()
+    public function getNumber(): int
     {
         return $this->number;
     }
@@ -79,7 +79,7 @@ abstract class Pin implements PinInterface
     /**
      * {@inheritdoc}
      */
-    protected function isExported()
+    protected function isExported(): bool
     {
         $directory = $this->getPinDirectory();
 
@@ -89,7 +89,7 @@ abstract class Pin implements PinInterface
     /**
      * {@inheritdoc}
      */
-    protected function getDirection()
+    protected function getDirection(): ?string
     {
         $directionFile = $this->getPinFile(self::GPIO_PIN_FILE_DIRECTION);
 
@@ -103,7 +103,7 @@ abstract class Pin implements PinInterface
     /**
      * {@inheritdoc}
      */
-    protected function setDirection($direction)
+    protected function setDirection(string $direction)
     {
         if ($this->getDirection() !== $direction) {
             $directionFile = $this->getPinFile(self::GPIO_PIN_FILE_DIRECTION);
@@ -115,7 +115,7 @@ abstract class Pin implements PinInterface
     /**
      * {@inheritdoc}
      */
-    public function getValue()
+    public function getValue(): int
     {
         $valueFile = $this->getPinFile(self::GPIO_PIN_FILE_VALUE);
         return (int) trim($this->fileSystem->getContents($valueFile));
@@ -128,7 +128,7 @@ abstract class Pin implements PinInterface
      *
      * @return string The file path
      */
-    private function getFile($file)
+    private function getFile(string $file): string
     {
         return self::GPIO_PATH . $file;
     }
@@ -138,7 +138,7 @@ abstract class Pin implements PinInterface
      *
      * @return string
      */
-    protected function getPinDirectory()
+    protected function getPinDirectory(): string
     {
         return self::GPIO_PATH . self::GPIO_PREFIX . $this->getNumber();
     }
@@ -150,7 +150,7 @@ abstract class Pin implements PinInterface
      *
      * @return string
      */
-    protected function getPinFile($file)
+    protected function getPinFile(string $file): string
     {
         return $this->getPinDirectory() . '/' . $file;
     }
@@ -160,7 +160,7 @@ abstract class Pin implements PinInterface
      *
      * @param string $file The file to write to
      */
-    private function writePinNumberToFile($file)
+    private function writePinNumberToFile(string $file)
     {
         $this->fileSystem->putContents($file, $this->getNumber());
     }

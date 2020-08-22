@@ -12,7 +12,7 @@ interface PinInterface
      *
      * @return int
      */
-    public function getNumber();
+    public function getNumber(): int;
 
     /**
      * Export the pin.
@@ -29,5 +29,5 @@ interface PinInterface
      *
      * @return int
      */
-    public function getValue();
+    public function getValue(): int;
 }
