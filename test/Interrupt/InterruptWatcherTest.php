@@ -34,7 +34,7 @@ class InterruptWatcherTest extends TestCase
         // Maps $except to $read for testing
         $streamSelect = function ($read, $write, $except) {
             $dummy = [];
-            return stream_select($except, $write, $dummy);
+            return stream_select($except, $write, $dummy, 0);
         };
 
         // Create the GPIO object using our mock dependencies
