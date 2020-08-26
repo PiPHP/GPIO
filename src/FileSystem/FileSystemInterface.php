@@ -11,7 +11,7 @@ interface FileSystemInterface
      *
      * @return bool true if file exists, false otherwise
      */
-    public function exists($path);
+    public function exists(string $path): bool;
 
     /**
      * Tells whether the filename is a directory
@@ -20,7 +20,7 @@ interface FileSystemInterface
      *
      * @return bool true if the filename exists and is a directory, false otherwise
      */
-    public function isDir($path);
+    public function isDir(string $path): bool;
 
     /**
      * Open a file.
@@ -30,7 +30,7 @@ interface FileSystemInterface
      *
      * @return resource A stream resource.
      */
-    public function open($path, $mode);
+    public function open(string $path, string $mode);
 
     /**
      * Read the contents of a file.
@@ -39,7 +39,7 @@ interface FileSystemInterface
      *
      * @return string The file contents
      */
-    public function getContents($path);
+    public function getContents(string $path): string;
 
     /**
      * Write a buffer to a file.
@@ -49,5 +49,5 @@ interface FileSystemInterface
      *
      * @return int The number of bytes written
      */
-    public function putContents($path, $buffer);
+    public function putContents(string $path, string $buffer): int;
 }

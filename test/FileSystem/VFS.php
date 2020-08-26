@@ -8,21 +8,22 @@ class VFS implements FileSystemInterface
 {
     private $vfs = [];
 
-    public function open($path, $mode)
+    public function open(string $path, string $mode)
     {
     }
 
-    public function getContents($path)
+    public function getContents(string $path): string
     {
         return $this->vfs[$path];
     }
 
-    public function putContents($path, $buffer)
+    public function putContents(string $path, string $buffer): int
     {
         $this->vfs[$path] = $buffer;
+        return 0;
     }
 
-    public function exists($path)
+    public function exists(string $path): bool
     {
         $regex = sprintf('#^%s(\/.+)?$#', preg_quote($path, '#'));
 
@@ -31,7 +32,7 @@ class VFS implements FileSystemInterface
         }));
     }
 
-    public function isDir($path)
+    public function isDir(string $path): bool
     {
         return $this->exists($path) && !array_key_exists($path, $this->vfs);
     }

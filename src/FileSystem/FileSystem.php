@@ -9,7 +9,7 @@ final class FileSystem implements FileSystemInterface
     /**
      * {@inheritdoc}
      */
-    public function open($path, $mode)
+    public function open(string $path, string $mode)
     {
         $stream = @fopen($path, $mode);
 
@@ -21,7 +21,7 @@ final class FileSystem implements FileSystemInterface
     /**
      * {@inheritdoc}
      */
-    public function getContents($path)
+    public function getContents(string $path): string
     {
         $stream = $this->open($path, 'r');
 
@@ -36,7 +36,7 @@ final class FileSystem implements FileSystemInterface
     /**
      * {@inheritdoc}
      */
-    public function putContents($path, $buffer)
+    public function putContents(string $path, string $buffer): int
     {
         $stream = $this->open($path, 'w');
 
@@ -59,7 +59,7 @@ final class FileSystem implements FileSystemInterface
     /**
      * {@inheritdoc}
      */
-    public function exists($path)
+    public function exists(string $path): bool
     {
         return file_exists($path);
     }
@@ -67,7 +67,7 @@ final class FileSystem implements FileSystemInterface
     /**
      * {@inheritdoc}
      */
-    public function isDir($path)
+    public function isDir(string $path): bool
     {
         return is_dir($path);
     }

@@ -5,6 +5,9 @@ namespace PiPHP\GPIO;
 use PiPHP\GPIO\FileSystem\FileSystem;
 use PiPHP\GPIO\FileSystem\FileSystemInterface;
 use PiPHP\GPIO\Interrupt\InterruptWatcher;
+use PiPHP\GPIO\Interrupt\InterruptWatcherInterface;
+use PiPHP\GPIO\Pin\InputPinInterface;
+use PiPHP\GPIO\Pin\OutputPinInterface;
 use PiPHP\GPIO\Pin\Pin;
 use PiPHP\GPIO\Pin\InputPin;
 use PiPHP\GPIO\Pin\OutputPin;
@@ -29,7 +32,7 @@ final class GPIO implements GPIOInterface
     /**
      * {@inheritdoc}
      */
-    public function getInputPin($number)
+    public function getInputPin(int $number): InputPinInterface
     {
         return new InputPin($this->fileSystem, $number);
     }
@@ -37,7 +40,7 @@ final class GPIO implements GPIOInterface
     /**
      * {@inheritdoc}
      */
-    public function getOutputPin($number, $exportDirection = Pin::DIRECTION_OUT)
+    public function getOutputPin($number, $exportDirection = Pin::DIRECTION_OUT): OutputPinInterface
     {
         if ($exportDirection !== Pin::DIRECTION_OUT && $exportDirection !== Pin::DIRECTION_LOW && $exportDirection !== Pin::DIRECTION_HIGH) {
             throw new \InvalidArgumentException('exportDirection has to be an OUT type (OUT/LOW/HIGH).');
@@ -49,7 +52,7 @@ final class GPIO implements GPIOInterface
     /**
      * {@inheritdoc}
      */
-    public function createWatcher()
+    public function createWatcher(): InterruptWatcherInterface
     {
         return new InterruptWatcher($this->fileSystem, $this->streamSelect);
     }

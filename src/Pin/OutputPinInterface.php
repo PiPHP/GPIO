@@ -9,5 +9,5 @@ interface OutputPinInterface extends PinInterface
      *
      * @param int $value The value to set
      */
-    public function setValue($value);
+    public function setValue(int $value);
 }
