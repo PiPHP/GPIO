@@ -51,13 +51,13 @@ $pin->setEdge(InputPinInterface::EDGE_BOTH);
 // Create an interrupt watcher
 $interruptWatcher = $gpio->createWatcher();
 
-// Register a callback to be triggered on pin interrupts
+// Register a callback to be triggered on pin interrupts with a 500 millisecond debounce delay
 $interruptWatcher->register($pin, function (InputPinInterface $pin, $value) {
     echo 'Pin ' . $pin->getNumber() . ' changed to: ' . $value . PHP_EOL;
 
     // Returning false will make the watcher return false immediately
     return true;
-});
+}, 500);
 
 // Watch for interrupts, timeout after 5000ms (5 seconds)
 while ($interruptWatcher->watch(5000));
